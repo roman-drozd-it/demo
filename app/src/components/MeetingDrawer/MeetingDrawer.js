@@ -12,17 +12,20 @@ import Tab from '@material-ui/core/Tab';
 import Badge from '@material-ui/core/Badge';
 import Chat from './Chat/Chat';
 import ParticipantList from './ParticipantList/ParticipantList';
+import MingleRooms from './MingleRooms/MingleRooms';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import IconButton from '@material-ui/core/IconButton';
 import ChatIcon from '@material-ui/icons/Chat';
 import GroupIcon from '@material-ui/icons/Group';
+import AccountTreeIcon from '@material-ui/icons/AccountTree';
 
 import { ReactComponent as PinIcon } from '../../images/pin-icon-baseline.svg';
 import { ReactComponent as UnpinIcon } from '../../images/pin-icon-outline.svg';
 
 const tabs =
 [
+	'tables',
 	'users',
 	'chat'
 ];
@@ -77,11 +80,29 @@ const MeetingDrawer = (props) =>
 				<Tabs
 					className={classes.tabsHeader}
 					value={tabs.indexOf(currentToolTab)}
-					onChange={(event, value) => setToolTab(tabs[value])}
+					onChange={(event, value) =>
+					{
+						setToolTab(tabs[value]);
+					}}
 					indicatorColor='primary'
 					textColor='primary'
 					variant='fullWidth'
+					// variant='scrollable'
+					// scrollButtons='auto'
+					// aria-label='scrollable auto tabs example'
 				>
+					<Tab
+						label={
+							<Badge color='secondary' badgeContent={null}>
+								<AccountTreeIcon />&nbsp;
+								{(browser.platform !== 'mobile') && intl.formatMessage({
+									id             : 'label.tables',
+									defaultMessage : 'Tables'
+								})}
+							</Badge>
+						}
+					/>
+
 					<Tab
 						label={
 							<Badge color='secondary' badgeContent={raisedHands}>
@@ -119,6 +140,11 @@ const MeetingDrawer = (props) =>
 					</React.Fragment>
 				)}
 			</AppBar>
+
+			<div style={{ display: currentToolTab === 'tables' ? 'block' : 'none' }}>
+				<MingleRooms/>
+			</div>
+			{/* }{currentToolTab === 'tables' && <MingleRooms />} */}
 			{currentToolTab === 'chat' && <Chat />}
 			{currentToolTab === 'users' && <ParticipantList />}
 		</div>

@@ -145,6 +145,29 @@ let oidcStrategy;
 let samlStrategy;
 let localStrategy;
 
+app.get('/info/getroomsnumber/:user/:pass', (req, res) =>
+{
+	try
+	{
+		res.send({
+			user        : req.params.user,
+			pass        : req.params.pass,
+			// rooms : Object.fromEntries(rooms),
+			roomsLength : rooms.size,
+			peers       : peers,
+			str         : 'Lorem',
+			var         : 'Var',
+			rnd         : Math.random()
+		});
+
+		console.log({rooms}); // eslint-disable-line
+	}
+	catch (e)
+	{
+		console.log('e--------:', e); // eslint-disable-line
+	}
+});
+
 async function run()
 {
 	try

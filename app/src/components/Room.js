@@ -28,6 +28,7 @@ import WakeLock from 'react-wakelock-react16';
 import ExtraVideo from './Controls/ExtraVideo';
 import ButtonControlBar from './Controls/ButtonControlBar';
 import Help from './Controls/Help';
+import MingleRoomsView from './MeetingDrawer/MingleRooms/View/View';
 import About from './Controls/About';
 import RolesManager from './Controls/RolesManager';
 import LeaveDialog from './LeaveDialog';
@@ -168,6 +169,7 @@ class Room extends React.PureComponent
 	{
 		const {
 			room,
+			mingleRooms,
 			browser,
 			advancedMode,
 			showNotifications,
@@ -295,6 +297,9 @@ class Room extends React.PureComponent
 				{ room.leaveOpen &&
 					<LeaveDialog/>
 				}
+				{ mingleRooms.tablesViewOpened &&
+					<MingleRoomsView />
+				}
 
 			</div>
 		);
@@ -304,6 +309,7 @@ class Room extends React.PureComponent
 Room.propTypes =
 {
 	room               : appPropTypes.Room.isRequired,
+	mingleRooms        : PropTypes.object.isRequired,
 	browser            : PropTypes.object.isRequired,
 	advancedMode       : PropTypes.bool.isRequired,
 	showNotifications  : PropTypes.bool.isRequired,
@@ -319,6 +325,7 @@ Room.propTypes =
 const mapStateToProps = (state) =>
 	({
 		room              : state.room,
+		mingleRooms       : state.mingleRooms,
 		browser           : state.me.browser,
 		advancedMode      : state.settings.advancedMode,
 		showNotifications : state.settings.showNotifications,
@@ -348,6 +355,7 @@ export default connect(
 		{
 			return (
 				prev.room === next.room &&
+				prev.mingleRooms.tablesViewOpened === next.mingleRooms.tablesViewOpened &&
 				prev.me.browser === next.me.browser &&
 				prev.settings.advancedMode === next.settings.advancedMode &&
 				prev.settings.showNotifications === next.settings.showNotifications &&

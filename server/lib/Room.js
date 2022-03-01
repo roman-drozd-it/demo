@@ -1376,6 +1376,165 @@ class Room extends EventEmitter
 				break;
 			}
 
+			// MINGLE_ROOMS =====================
+			case 'createMingleRoomSession':
+			{
+				// Ensure the Peer is joined.
+				if (!peer.joined)
+					throw new Error('Peer not yet joined');
+
+				// const { displayName } = request.data;
+
+				const list = 	[
+					{
+						id    : '2eed33',
+						url   : '/2eed33',
+						users : [
+							{
+								id   : '2edf43',
+								name : 'Janek Nowak'
+							},
+							{
+								id   : '2edf43',
+								name : 'Paweł Zieowit'
+							},
+							{
+								id   : '2edf43',
+								name : 'Ana333'
+							},
+							{
+								id   : '2edf43',
+								name : 'Paweł Zieowit (wawa)'
+							}
+
+						]
+					},
+					{
+						id    : 'ab3558b',
+						url   : '/b3558b',
+						users : [
+							{
+								id   : '2edf43',
+								name : 'Adam Nowak'
+							},
+							{
+								id   : '2edf43',
+								name : 'Zenon'
+							}
+						]
+					},
+					{
+						id    : 'dd83j3',
+						url   : '/dd83j3',
+						users : [
+							{
+								id   : '2edf43',
+								name : 'Agata Bieńkowska'
+							},
+							{
+								id   : '2edf43',
+								name : 'Arnold Pietruszak'
+							},
+							{
+								id   : '432ac4',
+								name : 'Mirosław Kowal'
+							},
+							{
+								id   : '432ac4',
+								name : 'Paweł Bednarz (PL)'
+							}
+
+						]
+					},
+					{
+						id    : 'ej84m4',
+						url   : '/ej84m4',
+						users : [
+							{
+								id   : '7ifi43',
+								name : 'Anett'
+							},
+							{
+								id   : '2ekfi3',
+								name : 'alan22'
+							}
+						]
+					},
+					{
+						id    : 'ee84k4',
+						url   : '/ee84k4',
+						users : [
+							{
+								id   : 'rfeg44',
+								name : 'fred66'
+							},
+							{
+								id   : '1mfg44',
+								name : 'Janina Słonina'
+							},
+							{
+								id   : '5h4ac4',
+								name : 'Arnold Więckowski'
+							},
+							{
+								id   : '441dd5',
+								name : 'Marianna (PL)'
+							}
+
+						]
+					}
+
+				];
+
+				// Spread to others
+				this._notification(peer.socket, 'createdMingleRoomSession', {
+					list
+				}, true, true);
+
+				// Return no error
+				cb();
+
+				break;
+			}
+
+			case 'closeMingleRoomsSession':
+			{
+				// Ensure the Peer is joined.
+				if (!peer.joined)
+					throw new Error('Peer not yet joined');
+
+				// Spread to others
+				this._notification(peer.socket, 'closedMingleRoomsSession', null, true, true);
+
+				// Return no error
+				cb();
+
+				break;
+			}
+
+			case 'gotRoomsNumber':
+			{
+				// Ensure the Peer is joined.
+				if (!peer.joined)
+					throw new Error('Peer not yet joined');
+
+				// const { displayName } = request.data;
+
+				// Spread to others
+				this._notification(peer.socket, 'gotRoomsNumber', {
+					rooms       : global.rooms,
+					roomsLength : global.rooms.length,
+					teststring  : 'lorem'
+				}, true, true);
+
+				// Return no error
+				cb();
+
+				break;
+			}
+
+			// /MINGLE ROOMS
+
 			case 'changeDisplayName':
 			{
 				// Ensure the Peer is joined.
