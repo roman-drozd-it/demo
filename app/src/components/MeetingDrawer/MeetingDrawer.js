@@ -141,10 +141,7 @@ const MeetingDrawer = (props) =>
 				)}
 			</AppBar>
 
-			<div style={{ display: currentToolTab === 'tables' ? 'block' : 'none' }}>
-				<MingleRooms/>
-			</div>
-			{/* }{currentToolTab === 'tables' && <MingleRooms />} */}
+			{currentToolTab === 'tables' && <MingleRooms />}
 			{currentToolTab === 'chat' && <Chat />}
 			{currentToolTab === 'users' && <ParticipantList />}
 		</div>

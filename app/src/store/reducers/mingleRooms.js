@@ -4,6 +4,7 @@ const initialState =
 {
 	enabled          : true,
 	tablesViewOpened : false,
+	tablesExpanded   : false,
 	list             : []
 };
 
@@ -16,6 +17,13 @@ const mingleRooms = (state = initialState, action) =>
 			const { tablesViewOpened } = action.payload;
 
 			return { ...state, tablesViewOpened };
+		}
+
+		case 'SET_TABLES_EXPANDED':
+		{
+			const { tablesExpanded } = action.payload;
+
+			return { ...state, tablesExpanded };
 		}
 
 		case 'CREATE_SESSION':
