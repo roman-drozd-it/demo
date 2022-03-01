@@ -86,13 +86,14 @@ const List = (props) =>
 								/>
 								}
 							</Grid>
+							{/*
 							{(
 								!loadedVideo.isPlaying ||
 								loadedVideo.peerId !== me.id ||
 								loadedVideo.url !== v.url
 							) ?
 								<Grid item>
-									{/* Button play */}
+									{/* Button play /}
 									<IconButton
 										aria-label={intl.formatMessage({
 											id             : 'vod.play',
@@ -112,11 +113,11 @@ const List = (props) =>
 									>
 										<PlayArrowIcon/>
 									</IconButton>
-									{/* /Button play */}
+									{/* /Button play /}
 								</Grid>
 								:
 								<Grid item>
-									{/* Button pause */}
+									{/* Button pause /}
 									<IconButton
 										aria-label={intl.formatMessage({
 											id             : 'vod.pause',
@@ -136,9 +137,10 @@ const List = (props) =>
 									>
 										<PauseIcon/>
 									</IconButton>
-									{/* /Button pause */}
+									{/* /Button pause /}
 								</Grid>
 							}
+							*/}
 
 							<Grid item>
 								{/* Button load */}
