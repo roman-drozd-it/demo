@@ -1,7 +1,13 @@
 export const setTablesViewOpen = (flag) =>
 	({
-		type    : 'SET_TABLES_VIEW_OPEN',
+		type    : 'SET_TABLES_EXPANDED',
 		payload : { tablesViewOpened: flag }
+	});
+
+export const setTablesExpanded = (flag) =>
+	({
+		type    : 'SET_TABLES_EXPANDED',
+		payload : { tablesExpanded: flag }
 	});
 
 export const createSession = (list) =>

@@ -65,10 +65,11 @@ const MingleRooms = (props) =>
 	const {
 		isModerator,
 		classes,
-		list
+		list,
+		tablesExpanded
 	} = props;
 
-	const [ listExpanded, setListExpanded ] = useState(false);
+	console.log({tablesExpanded}); // eslint-disable-line
 
 	return (
 		<div className={classes.root}>
@@ -79,8 +80,8 @@ const MingleRooms = (props) =>
 						defaultMessage='Tables'
 					/>
 				</li>
-				<Menu setListExpanded={setListExpanded}/>
-				<Collapse in={listExpanded}>
+				<Menu/>
+				<Collapse in={tablesExpanded}>
 					<List/>
 				</Collapse>
 
@@ -91,9 +92,10 @@ const MingleRooms = (props) =>
 
 MingleRooms.propTypes =
 {
-	isModerator : PropTypes.bool.isRequired,
-	classes     : PropTypes.object.isRequired,
-	list        : PropTypes.object.isRequired
+	isModerator    : PropTypes.bool.isRequired,
+	classes        : PropTypes.object.isRequired,
+	list           : PropTypes.object.isRequired,
+	tablesExpanded : PropTypes.bool.isRequired
 };
 
 const makeMapStateToProps = () =>
@@ -103,7 +105,8 @@ const makeMapStateToProps = () =>
 	const mapStateToProps = (state) =>
 	{
 		return {
-			isModerator : hasPermission(state)
+			isModerator    : hasPermission(state),
+			tablesExpanded : state.mingleRooms.tablesExpanded
 		};
 	};
 
@@ -119,7 +122,8 @@ const MingleRoomsContainer = connect(
 		{
 			return (
 				prev.me.roles === next.me.roles &&
-				prev.mingleRooms.list === next.mingleRooms.list
+				prev.mingleRooms.list === next.mingleRooms.list &&
+				prev.mingleRooms.tablesExpanded === next.mingleRooms.tablesExpanded
 			);
 		}
 	}

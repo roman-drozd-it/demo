@@ -265,6 +265,8 @@ class Room extends EventEmitter
 
 		this._chatHistory = [];
 
+		this._tables = [];
+
 		this._fileHistory = [];
 
 		this._vod = null;
@@ -1466,7 +1468,7 @@ class Room extends EventEmitter
 
 				// const { displayName } = request.data;
 
-				const list = 	[
+				this._tables = [
 					{
 						id    : '2eed33',
 						url   : '/2eed33',
@@ -1569,7 +1571,7 @@ class Room extends EventEmitter
 
 				// Spread to others
 				this._notification(peer.socket, 'createdMingleRoomSession', {
-					list
+					list : this._tables
 				}, true, true);
 
 				// Return no error

@@ -50,10 +50,8 @@ const Menu = (props) =>
 		classes,
 		list,
 		setTablesViewOpen,
-		setListExpanded
+		setTablesExpanded
 	} = props;
-
-	// const [ listExpanded, setListExpanded ] = useState(false);
 
 	return (
 		<div className={classes.root}>
@@ -75,7 +73,7 @@ const Menu = (props) =>
 							onClick={async () =>
 							{
 								await roomClient.createMingleRoomsSession();
-								setListExpanded(true);
+								setTablesExpanded(true);
 							}}
 							aria-label={intl.formatMessage({
 								id             : 'mingleRooms.createSession',
@@ -95,7 +93,7 @@ const Menu = (props) =>
 							variant='contained'
 							onClick={async () =>
 							{
-								setListExpanded(false);
+								setTablesExpanded(false);
 								setTimeout(function()
 								{
 									roomClient.closeMingleRoomsSession();
@@ -139,20 +137,6 @@ const Menu = (props) =>
 				*/}
 				{/* /BUTTON CLOSE MAP */}
 			</Grid>
-
-			<Grid
-				className={classes.list}
-				container
-				wrap='nowrap'
-				alignItems='center'
-				justifyContent='space-between'
-			>
-				{/*
-				<Collapse in={listExpanded}>
-					<List/>
-				</Collapse>
-				*/}
-			</Grid>
 		</div>
 	);
 };
@@ -162,8 +146,9 @@ Menu.propTypes =
 	roomClient        : PropTypes.any.isRequired,
 	classes           : PropTypes.object.isRequired,
 	list              : PropTypes.object.isRequired,
+	tablesExpanded    : PropTypes.bool.isRequired,
 	setTablesViewOpen : PropTypes.func.isRequired,
-	setListExpanded   : PropTypes.func.isRequired
+	setTablesExpanded : PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state) => ({
@@ -175,7 +160,12 @@ const mapDispatchToProps = (dispatch) =>
 		setTablesViewOpen : (flag) =>
 		{
 			dispatch(mingleRoomsActions.setTablesViewOpen(flag));
+		},
+		setTablesExpanded : (flag) =>
+		{
+			dispatch(mingleRoomsActions.setTablesExpanded(flag));
 		}
+
 	});
 
 export default withRoomContext(connect(
@@ -186,7 +176,8 @@ export default withRoomContext(connect(
 		areStatesEqual : (next, prev) =>
 		{
 			return (
-				prev.mingleRooms.list === next.mingleRooms.list
+				prev.mingleRooms.list === next.mingleRooms.list &&
+				prev.mingleRooms.tablesExpanded === next.mingleRooms.tablesExpanded
 			);
 		}
 	}
