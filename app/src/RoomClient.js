@@ -6,6 +6,7 @@ import * as requestActions from './store/actions/requestActions';
 import * as meActions from './store/actions/meActions';
 import * as intlActions from './store/actions/intlActions';
 import * as roomActions from './store/actions/roomActions';
+import * as mingleRoomsActions from './store/actions/mingleRoomsActions';
 import * as peerActions from './store/actions/peerActions';
 import * as peerVolumeActions from './store/actions/peerVolumeActions';
 import * as settingsActions from './store/actions/settingsActions';
@@ -866,6 +867,71 @@ export default class RoomClient
 			}
 		}
 	}
+
+	// MINGLE ROOMS ===================
+	async createMingleRoomsSession()
+	{
+		// logger.debug('createMingleRoomSession() [list: "%s"]', list);
+
+		try
+		{
+			await this.sendRequest('createMingleRoomSession');
+
+			store.dispatch(requestActions.notify(
+				{
+					text : intl.formatMessage({
+						id             : 'mingleRooms.sessionCreating',
+						defaultMessage : 'Mingle Rooms session creating'
+					})
+				}));
+
+		}
+		catch (error)
+		{
+			logger.error('createMingleRoomSession() [error:"%o"]', error);
+		}
+	}
+
+	async closeMingleRoomsSession()
+	{
+		// logger.debug('closeMingleRoomsSession() [list: "%s"]', list);
+
+		try
+		{
+			await this.sendRequest('closeMingleRoomsSession');
+
+		}
+		catch (error)
+		{
+			logger.error('closeMingleRoomsSession() [error:"%o"]', error);
+		}
+	}
+
+	async getRoomsNumber()
+	{
+
+		/*
+		try
+		{
+			store.dispatch(
+				chatActions.addMessage(
+					{
+						...chatMessage,
+						// name    : 'Me',
+						sender  : 'client',
+						picture : undefined,
+						isRead  : true
+					}
+				)
+			);
+
+			store.dispatch(
+				chatActions.setIsScrollEnd(true));
+			*/
+
+		await this.sendRequest('getRoomsNumber');
+	}
+	// MINGLE ROOMS ==============================
 
 	async changeDisplayName(displayName)
 	{
@@ -3004,6 +3070,92 @@ export default class RoomClient
 			{
 				switch (notification.method)
 				{
+					// MINGLE ROOMS =====================
+					case 'createdMingleRoomSession':
+					{
+						const { list } = notification.data;
+
+						logger.debug('createdMingleRoomSession() [list: "%s"]', list);
+
+						try
+						{
+							store.dispatch(
+								mingleRoomsActions.createSession(list)
+							);
+
+							store.dispatch(requestActions.notify(
+								{
+									text : intl.formatMessage({
+										id             : 'mingleRooms.sessionCreated',
+										defaultMessage : 'Mingle Rooms session created'
+									})
+								}));
+
+						}
+						catch (error)
+						{
+							logger.error('createdMingledRoomSession() [error:"%o"]', error);
+						}
+
+						/* 
+						store.dispatch(
+							lobbyPeerActions.setLobbyPeerDisplayName(displayName, peerId));
+						 */
+
+						break;
+					}
+
+					case 'closedMingleRoomsSession':
+					{
+						try
+						{
+							store.dispatch(
+								mingleRoomsActions.closeSession());
+
+							store.dispatch(requestActions.notify(
+								{
+									text : intl.formatMessage({
+										id             : 'mingleRooms.sessionClosed',
+										defaultMessage : 'Mingle Rooms session closed'
+									})
+								}));
+
+						}
+						catch (error)
+						{
+							logger.error('closedMingleRoomsSession() [error:"%o"]', error);
+						}
+
+						break;
+					}
+
+					case 'gotRoomsNumber':
+					{
+						const { rooms, roomsLength, teststring } = notification.data;
+
+						/* 
+						store.dispatch(
+							lobbyPeerActions.setLobbyPeerDisplayName(displayName, peerId));
+						 */
+
+						console.log({rooms, roomsLength, teststring}); // eslint-disable-line
+						/* 
+						store.dispatch(requestActions.notify(
+							{
+								text : intl.formatMessage({
+									id             : 'room.lobbyPeerChangedDisplayName',
+									defaultMessage : 'Participant in lobby changed name to {displayName}'
+								}, {
+									displayName
+								})
+							}));
+
+						if (peerId === this._peerId)
+							this._displayName=displayName;
+						 */
+						break;
+					}
+					// /MINGLE ROOMS =====================
 
 					case 'enteredLobby':
 					{

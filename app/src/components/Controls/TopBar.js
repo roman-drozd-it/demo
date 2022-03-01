@@ -15,6 +15,7 @@ import * as appPropTypes from '../appPropTypes';
 import { withRoomContext } from '../../RoomContext';
 import { withStyles } from '@material-ui/core/styles';
 import * as roomActions from '../../store/actions/roomActions';
+import * as mingleRoomsActions from '../../store/actions/mingleRoomsActions';
 import * as toolareaActions from '../../store/actions/toolareaActions';
 import * as notificationActions from '../../store/actions/notificationActions';
 import { useIntl, FormattedMessage } from 'react-intl';
@@ -30,6 +31,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Badge from '@material-ui/core/Badge';
 import Paper from '@material-ui/core/Paper';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+import AccountTreeIcon from '@material-ui/icons/AccountTree';
 import FullScreenIcon from '@material-ui/icons/Fullscreen';
 import FullScreenExitIcon from '@material-ui/icons/FullscreenExit';
 import SettingsIcon from '@material-ui/icons/Settings';
@@ -263,6 +265,7 @@ const TopBar = (props) =>
 		onFullscreen,
 		setSettingsOpen,
 		setExtraVideoOpen,
+		setTablesViewOpen,
 		setHelpOpen,
 		setAboutOpen,
 		setLeaveOpen,
@@ -270,6 +273,7 @@ const TopBar = (props) =>
 		setHideSelfView,
 		toggleToolArea,
 		openUsersTab,
+		openMingleRoomsTab,
 		addNotification,
 		closeNotification,
 		unread,
@@ -286,7 +290,8 @@ const TopBar = (props) =>
 		recordingMimeType,
 		producers,
 		consumers,
-		recordingConsents
+		recordingConsents,
+		mingleRooms
 	} = props;
 
 	// did it change?
@@ -449,6 +454,27 @@ const TopBar = (props) =>
 					}
 					<div className={classes.grow} />
 					<div className={classes.sectionDesktop}>
+						{ mingleRooms.list.length > 0 &&
+						<Button
+							color='secondary'
+							variant='contained'
+							className={classes.actionButton}
+							component='span'
+							startIcon={<AccountTreeIcon/>}
+							// onClick={() => setTablesViewOpen(true)}
+							onClick={() => openMingleRoomsTab()}
+							aria-label={intl.formatMessage({
+								id             : 'mingleRooms.tables',
+								defaultMessage : 'Tables'
+							})}
+						>
+							<FormattedMessage
+								id='mingleRooms.tables'
+								defaultMessage='Tables'
+							/>
+						</Button>
+						}
+
 						{ recordingInProgress &&
 						<IconButton
 							disabled
@@ -1247,8 +1273,9 @@ TopBar.propTypes =
 {
 	roomClient           : PropTypes.object.isRequired,
 	room                 : appPropTypes.Room.isRequired,
-	isSafari         			 : PropTypes.bool,
-	meId         				    : PropTypes.string,
+	mingleRooms          : appPropTypes.object,
+	isSafari             : PropTypes.bool,
+	meId                	: PropTypes.string,
 	isMobile             : PropTypes.bool.isRequired,
 	peersLength          : PropTypes.number,
 	lobbyPeers           : PropTypes.array,
@@ -1266,10 +1293,12 @@ TopBar.propTypes =
 	setExtraVideoOpen    : PropTypes.func.isRequired,
 	setHelpOpen          : PropTypes.func.isRequired,
 	setAboutOpen         : PropTypes.func.isRequired,
+	setTablesViewOpen    : PropTypes.func.isRequired,
 	setLockDialogOpen    : PropTypes.func.isRequired,
 	setHideSelfView      : PropTypes.func.isRequired,
 	toggleToolArea       : PropTypes.func.isRequired,
 	openUsersTab         : PropTypes.func.isRequired,
+	openMingleRoomsTab   : PropTypes.func.isRequired,
 	addNotification      : PropTypes.func.isRequired,
 	closeNotification    : PropTypes.func.isRequired,
 	unread               : PropTypes.number.isRequired,
@@ -1307,6 +1336,7 @@ const makeMapStateToProps = () =>
 	const mapStateToProps = (state) =>
 		({
 			room                : state.room,
+			mingleRooms         : state.mingleRooms,
 			isSafari            : state.me.browser.name !== 'safari',
 			meId                : state.me.id,
 			isMobile            : state.me.browser.platform === 'mobile',
@@ -1367,6 +1397,11 @@ const mapDispatchToProps = (dispatch) =>
 		{
 			dispatch(roomActions.setLockDialogOpen(lockDialogOpen));
 		},
+		setTablesViewOpen : (tablesViewOpened) =>
+		{
+			dispatch(mingleRoomsActions.setTablesViewOpen(tablesViewOpened));
+		},
+
 		setHideSelfView : (hideSelfView) =>
 		{
 			dispatch(roomActions.setHideSelfView(hideSelfView));
@@ -1379,6 +1414,11 @@ const mapDispatchToProps = (dispatch) =>
 		{
 			dispatch(toolareaActions.openToolArea());
 			dispatch(toolareaActions.setToolTab('users'));
+		},
+		openMingleRoomsTab : () =>
+		{
+			dispatch(toolareaActions.openToolArea());
+			dispatch(toolareaActions.setToolTab('tables'));
 		},
 		addNotification : (notification) =>
 		{
@@ -1399,6 +1439,7 @@ export default withRoomContext(connect(
 		{
 			return (
 				prev.room === next.room &&
+				prev.mingleRooms === next.mingleRooms &&
 				prev.peers === next.peers &&
 				prev.lobbyPeers === next.lobbyPeers &&
 				prev.settings.permanentTopBar === next.settings.permanentTopBar &&

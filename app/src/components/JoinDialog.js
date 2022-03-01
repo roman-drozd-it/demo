@@ -322,6 +322,12 @@ const JoinDialog = ({
 			logger.error('Error checking login status', error);
 		});
 
+	/* 
+	useEffect(() =>
+	{
+		handleJoin();
+	});
+	 */
 	return (
 		<div className={classes.root}>
 			<Dialog

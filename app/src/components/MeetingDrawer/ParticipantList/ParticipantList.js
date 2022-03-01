@@ -24,6 +24,22 @@ const styles = (theme) =>
 			overflowY : 'auto',
 			padding   : theme.spacing(1)
 		},
+		'@global' : {
+			'*' : {
+				'scrollbar-width' : 'thin'
+			},
+			'*::-webkit-scrollbar' : {
+				width  : '5px',
+				height : '5px'
+			},
+			'*::-webkit-scrollbar-track' : {
+				background : 'white'
+
+			},
+			'*::-webkit-scrollbar-thumb' : {
+				backgroundColor : '#999999'
+			}
+		},
 		list :
 		{
 			listStyleType   : 'none',
@@ -83,7 +99,7 @@ class ParticipantList extends React.PureComponent
 
 		return (
 			<div className={classes.root} ref={(node) => { this.node = node; }}>
-				{ isModerator &&
+				{ !isModerator &&
 					<ul className={classes.list}>
 						<li className={classes.listheader}>
 							<FormattedMessage
