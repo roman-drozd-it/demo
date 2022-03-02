@@ -3073,7 +3073,7 @@ export default class RoomClient
 					// MINGLE ROOMS =====================
 					case 'createdMingleRoomSession':
 					{
-						const { list } = notification.data;
+						const { list, tablesExpanded } = notification.data;
 
 						logger.debug('createdMingleRoomSession() [list: "%s"]', list);
 
@@ -3081,6 +3081,10 @@ export default class RoomClient
 						{
 							store.dispatch(
 								mingleRoomsActions.createSession(list)
+							);
+
+							store.dispatch(
+								mingleRoomsActions.setTablesExpanded(tablesExpanded)
 							);
 
 							store.dispatch(requestActions.notify(
@@ -3107,10 +3111,16 @@ export default class RoomClient
 
 					case 'closedMingleRoomsSession':
 					{
+						const { tablesExpanded } = notification.data;
+
 						try
 						{
 							store.dispatch(
 								mingleRoomsActions.closeSession());
+
+							store.dispatch(
+								mingleRoomsActions.setTablesExpanded(tablesExpanded)
+							);
 
 							store.dispatch(requestActions.notify(
 								{
@@ -4380,6 +4390,7 @@ export default class RoomClient
 				userRoles,
 				allowWhenRoleMissing,
 				chatHistory,
+				tables,
 				fileHistory,
 				vod,
 				lastNHistory,
@@ -4457,6 +4468,19 @@ export default class RoomClient
 				vod.loadedVideo ?
 					store.dispatch(vodActions.loadVod(vod.loadedVideo)) :
 					store.dispatch(vodActions.unloadVod());
+			}
+
+			if (tables.list.length > 0)
+			{
+				const { list, tablesExpanded } = tables;
+
+				store.dispatch(
+					mingleRoomsActions.createSession(list)
+				);
+
+				store.dispatch(
+					mingleRoomsActions.setTablesExpanded(tablesExpanded)
+				);
 			}
 
 			locked ?

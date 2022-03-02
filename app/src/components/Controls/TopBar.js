@@ -63,16 +63,16 @@ const styles = (theme) =>
 	({
 		persistentDrawerOpen :
 		{
-			width                          : 'calc(100% - 30vw)',
-			marginLeft                     : '30vw',
+			width                          : 'calc(100% - 38vw)',
+			marginLeft                     : '38vw',
 			[theme.breakpoints.down('lg')] :
 			{
-				width      : 'calc(100% - 30vw)',
+				width      : 'calc(100% - 38vw)',
 				marginLeft : '40vw'
 			},
 			[theme.breakpoints.down('md')] :
 			{
-				width      : 'calc(100% - 40vw)',
+				width      : 'calc(100% - 50vw)',
 				marginLeft : '50vw'
 			},
 			[theme.breakpoints.down('sm')] :
@@ -470,7 +470,10 @@ const TopBar = (props) =>
 						>
 							<FormattedMessage
 								id='mingleRooms.tables'
-								defaultMessage='Tables'
+								defaultMessage='Tables ({count})'
+								values={{
+									count : mingleRooms.list.length
+								}}
 							/>
 						</Button>
 						}

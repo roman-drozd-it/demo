@@ -265,7 +265,7 @@ class Room extends EventEmitter
 
 		this._chatHistory = [];
 
-		this._tables = [];
+		this._tables = { list: [], tablesExpanded: false };
 
 		this._fileHistory = [];
 
@@ -322,6 +322,8 @@ class Room extends EventEmitter
 		this._fileHistory = null;
 
 		this._vod = null;
+
+		this._tables = { list: [], tablesExpanded: false };
 
 		this._lobby.close();
 
@@ -995,6 +997,7 @@ class Room extends EventEmitter
 					userRoles            : userRoles,
 					allowWhenRoleMissing : roomAllowWhenRoleMissing,
 					chatHistory          : this._chatHistory,
+					tables               : this._tables,
 					fileHistory          : this._fileHistory,
 					vod                  :
 					{
@@ -1468,7 +1471,7 @@ class Room extends EventEmitter
 
 				// const { displayName } = request.data;
 
-				this._tables = [
+				this._tables.list = [
 					{
 						id    : '2eed33',
 						url   : '/2eed33',
@@ -1569,9 +1572,12 @@ class Room extends EventEmitter
 
 				];
 
+				this._tables.tablesExpanded = true;
+
 				// Spread to others
 				this._notification(peer.socket, 'createdMingleRoomSession', {
-					list : this._tables
+					list           : this._tables.list,
+					tablesExpanded : this._tables.tablesExpanded
 				}, true, true);
 
 				// Return no error
@@ -1586,8 +1592,13 @@ class Room extends EventEmitter
 				if (!peer.joined)
 					throw new Error('Peer not yet joined');
 
+				this._tables.tablesExpanded = false;
+
 				// Spread to others
-				this._notification(peer.socket, 'closedMingleRoomsSession', null, true, true);
+				this._notification(peer.socket, 'closedMingleRoomsSession',
+					{
+						tablesExpanded : this._tables.tablesExpanded
+					}, true, true);
 
 				// Return no error
 				cb();
