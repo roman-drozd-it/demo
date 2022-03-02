@@ -87,8 +87,11 @@ const List = (props) =>
 									<Typography style={{ fontWeight: 'bold' }}>
 										<FormattedMessage
 											id='mingleRooms.table'
-											defaultMessage='Table'
-										/> {i+1}
+											defaultMessage='Table {number}'
+											values={{
+												number : ++i
+											}}
+										/>
 									</Typography>
 									{/* /TABLE NAME */}
 

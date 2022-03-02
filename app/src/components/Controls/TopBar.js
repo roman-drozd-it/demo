@@ -470,7 +470,10 @@ const TopBar = (props) =>
 						>
 							<FormattedMessage
 								id='mingleRooms.tables'
-								defaultMessage='Tables'
+								defaultMessage='Tables ({count})'
+								values={{
+									count : mingleRooms.list.length
+								}}
 							/>
 						</Button>
 						}

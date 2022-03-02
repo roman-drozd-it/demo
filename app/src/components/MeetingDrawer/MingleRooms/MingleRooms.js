@@ -74,21 +74,33 @@ const MingleRooms = (props) =>
 
 	return (
 		<div className={classes.root}>
+			{isPresenter &&
+			<ul className={classes.list}>
+				<li className={classes.listheader}>
+					<FormattedMessage
+						id='label.menu'
+						defaultMessage='Menu'
+					/>
+				</li>
+				<Menu/>
+			</ul>
+			}
 			<ul className={classes.list}>
 				<li className={classes.listheader}>
 					<FormattedMessage
 						id='label.tables'
-						defaultMessage='Tables'
+						defaultMessage='Tables ({count})'
+						values={{
+							count : list.length
+						}}
 					/>
 				</li>
-				{isPresenter &&
-				<Menu/>
-				}
 				<Collapse in={tablesExpanded}>
 					<List/>
 				</Collapse>
 
 			</ul>
+
 		</div>
 	);
 };
@@ -97,7 +109,7 @@ MingleRooms.propTypes =
 {
 	isModerator    : PropTypes.bool.isRequired,
 	classes        : PropTypes.object.isRequired,
-	list           : PropTypes.object.isRequired,
+	list           : PropTypes.array.isRequired,
 	tablesExpanded : PropTypes.bool.isRequired,
 	isPresenter    : PropTypes.bool.isRequired
 };
@@ -113,7 +125,8 @@ const makeMapStateToProps = () =>
 		return {
 			isModerator    : hasPermission(state),
 			isPresenter    : hasPresenterPerm(state),
-			tablesExpanded : state.mingleRooms.tablesExpanded
+			tablesExpanded : state.mingleRooms.tablesExpanded,
+			list           : state.mingleRooms.list
 		};
 	};
 
