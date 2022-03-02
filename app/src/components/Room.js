@@ -52,15 +52,15 @@ const styles = (theme) =>
 		},
 		drawer :
 		{
-			width                          : '30vw',
+			width                          : '38vw',
 			flexShrink                     : 0,
 			[theme.breakpoints.down('lg')] :
 			{
-				width : '30vw'
+				width : '38vw'
 			},
 			[theme.breakpoints.down('md')] :
 			{
-				width : '40vw'
+				width : '50vw'
 			},
 			[theme.breakpoints.down('sm')] :
 			{
@@ -73,14 +73,14 @@ const styles = (theme) =>
 		},
 		drawerPaper :
 		{
-			width                          : '30vw',
+			width                          : '38vw',
 			[theme.breakpoints.down('lg')] :
 			{
-				width : '30vw'
+				width : '38vw'
 			},
 			[theme.breakpoints.down('md')] :
 			{
-				width : '40vw'
+				width : '50vw'
 			},
 			[theme.breakpoints.down('sm')] :
 			{
