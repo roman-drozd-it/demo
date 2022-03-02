@@ -73,7 +73,7 @@ const Menu = (props) =>
 							onClick={async () =>
 							{
 								await roomClient.createMingleRoomsSession();
-								setTablesExpanded(true);
+								// setTablesExpanded(true);
 							}}
 							aria-label={intl.formatMessage({
 								id             : 'mingleRooms.createSession',
@@ -93,7 +93,7 @@ const Menu = (props) =>
 							variant='contained'
 							onClick={async () =>
 							{
-								setTablesExpanded(false);
+								// setTablesExpanded(false);
 								setTimeout(function()
 								{
 									roomClient.closeMingleRoomsSession();

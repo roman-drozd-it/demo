@@ -2871,7 +2871,7 @@ export default class RoomClient
 					// MINGLE ROOMS =====================
 					case 'createdMingleRoomSession':
 					{
-						const { list } = notification.data;
+						const { list, tablesExpanded } = notification.data;
 
 						logger.debug('createdMingleRoomSession() [list: "%s"]', list);
 
@@ -2879,6 +2879,10 @@ export default class RoomClient
 						{
 							store.dispatch(
 								mingleRoomsActions.createSession(list)
+							);
+
+							store.dispatch(
+								mingleRoomsActions.setTablesExpanded(tablesExpanded)
 							);
 
 							store.dispatch(requestActions.notify(
@@ -2905,10 +2909,16 @@ export default class RoomClient
 
 					case 'closedMingleRoomsSession':
 					{
+						const { tablesExpanded } = notification.data;
+
 						try
 						{
 							store.dispatch(
 								mingleRoomsActions.closeSession());
+
+							store.dispatch(
+								mingleRoomsActions.setTablesExpanded(tablesExpanded)
+							);
 
 							store.dispatch(requestActions.notify(
 								{
@@ -4062,6 +4072,7 @@ export default class RoomClient
 				userRoles,
 				allowWhenRoleMissing,
 				chatHistory,
+				tables,
 				fileHistory,
 				lastNHistory,
 				locked,
@@ -4130,6 +4141,19 @@ export default class RoomClient
 
 			(fileHistory.length > 0) && store.dispatch(
 				fileActions.addFileHistory(fileHistory));
+
+			if (tables.list.length > 0)
+			{
+				const { list, tablesExpanded } = tables;
+
+				store.dispatch(
+					mingleRoomsActions.createSession(list)
+				);
+
+				store.dispatch(
+					mingleRoomsActions.setTablesExpanded(tablesExpanded)
+				);
+			}
 
 			locked ?
 				store.dispatch(roomActions.setRoomLocked()) :

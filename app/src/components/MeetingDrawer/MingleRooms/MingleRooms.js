@@ -66,7 +66,8 @@ const MingleRooms = (props) =>
 		isModerator,
 		classes,
 		list,
-		tablesExpanded
+		tablesExpanded,
+		isPresenter
 	} = props;
 
 	console.log({tablesExpanded}); // eslint-disable-line
@@ -80,7 +81,9 @@ const MingleRooms = (props) =>
 						defaultMessage='Tables'
 					/>
 				</li>
+				{isPresenter &&
 				<Menu/>
+				}
 				<Collapse in={tablesExpanded}>
 					<List/>
 				</Collapse>
@@ -95,17 +98,21 @@ MingleRooms.propTypes =
 	isModerator    : PropTypes.bool.isRequired,
 	classes        : PropTypes.object.isRequired,
 	list           : PropTypes.object.isRequired,
-	tablesExpanded : PropTypes.bool.isRequired
+	tablesExpanded : PropTypes.bool.isRequired,
+	isPresenter    : PropTypes.bool.isRequired
 };
 
 const makeMapStateToProps = () =>
 {
 	const hasPermission = makePermissionSelector(permissions.MODERATE_ROOM);
 
+	const hasPresenterPerm = makePermissionSelector(permissions.SHARE_VOD);
+
 	const mapStateToProps = (state) =>
 	{
 		return {
 			isModerator    : hasPermission(state),
+			isPresenter    : hasPresenterPerm(state),
 			tablesExpanded : state.mingleRooms.tablesExpanded
 		};
 	};
